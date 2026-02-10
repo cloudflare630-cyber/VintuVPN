@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="VintuVPN - Fast, secure, and free VPN service with V2RayTUN support">
+    <meta name="keywords" content="VPN, Free VPN, V2RayTUN, Secure VPN, Privacy">
+    <link rel="icon" type="image/svg+xml" href="logo-simple.svg">
+    <link rel="apple-touch-icon" href="logo-simple.svg">
     <title>VintuVPN - Cosmic VPN Experience</title>
     <style>
         * {
@@ -163,11 +168,16 @@
             position: relative;
         }
 
-        .logo::before {
-            content: '🌌';
-            font-size: 36px;
-            filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.8));
-            animation: rotate 10s linear infinite;
+        .logo-img {
+            width: 45px;
+            height: 45px;
+            filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.6));
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
         }
 
         @keyframes rotate {
@@ -696,7 +706,10 @@
     <div class="cursor-glow" id="cursorGlow"></div>
 
     <header>
-        <div class="logo">VintuVPN</div>
+        <div class="logo">
+            <img src="logo-simple.svg" alt="VintuVPN Logo" class="logo-img">
+            VintuVPN
+        </div>
         <nav>
             <a href="#features" data-en="Features" data-ru="Функции">Features</a>
             <a href="#download" data-en="Download" data-ru="Скачать">Download</a>
@@ -931,10 +944,67 @@
 
         function downloadVPN() {
             const fileName = 'Free-VPN.zip';
-            alert(currentLang === 'en' 
-                ? `🚀 Initiating cosmic download of ${fileName}...\n\n✨ This is a demo. In production, this would download the actual VPN client compatible with V2RayTUN and other advanced protocols.`
-                : `🚀 Начинается космическая загрузка ${fileName}...\n\n✨ Это демонстрация. В продакшене это будет скачивать реальный VPN клиент, совместимый с V2RayTUN и другими продвинутыми протоколами.`
-            );
+            
+            // Show notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, rgba(0, 212, 255, 0.95), rgba(157, 78, 221, 0.95));
+                padding: 40px 60px;
+                border-radius: 25px;
+                border: 2px solid rgba(0, 212, 255, 0.6);
+                box-shadow: 0 20px 60px rgba(0, 212, 255, 0.4);
+                z-index: 10000;
+                text-align: center;
+                backdrop-filter: blur(20px);
+                animation: fadeIn 0.3s;
+            `;
+            
+            notification.innerHTML = `
+                <h3 style="margin: 0 0 15px 0; font-size: 24px;">🚀 ${currentLang === 'en' ? 'Preparing Download' : 'Подготовка Загрузки'}</h3>
+                <p style="margin: 0; font-size: 16px;">${currentLang === 'en' 
+                    ? 'Your VPN client will download shortly...' 
+                    : 'Ваш VPN клиент скоро начнет загружаться...'}</p>
+                <div style="margin-top: 20px;">
+                    <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden;">
+                        <div style="width: 0%; height: 100%; background: white; animation: progress 2s forwards;"></div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Add animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+                    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                }
+                @keyframes progress {
+                    from { width: 0%; }
+                    to { width: 100%; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Simulate download preparation
+            setTimeout(() => {
+                notification.remove();
+                style.remove();
+                
+                // In production, uncomment this line and add the actual file:
+                // window.location.href = 'Free-VPN.zip';
+                
+                // For demo purposes, show info
+                alert(currentLang === 'en' 
+                    ? `✨ Demo Mode\n\nTo enable actual downloads:\n1. Add your Free-VPN.zip file to the repository\n2. Uncomment the download line in the code\n3. The file will be available at:\n   https://yourusername.github.io/vintuvpn/Free-VPN.zip`
+                    : `✨ Демо Режим\n\nДля включения реальной загрузки:\n1. Добавьте файл Free-VPN.zip в репозиторий\n2. Раскомментируйте строку загрузки в коде\n3. Файл будет доступен по адресу:\n   https://yourusername.github.io/vintuvpn/Free-VPN.zip`
+                );
+            }, 2000);
         }
 
         // Smooth scrolling
